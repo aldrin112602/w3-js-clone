@@ -63,7 +63,9 @@ const w3 = (() => {
     if(selector && property && value) {
       if([property, value]
       .filter(item => typeof item != 'string').length == 0) {
-        
+        this.$(selector).elements.forEach((element) => {
+          element.style[this.toCamelCase(property)] = value;
+        });
       }
     }
     return this;
@@ -85,6 +87,5 @@ const w3 = (() => {
     return str;
   }
 
-  // Return the w3 object.
   return w3;
 })();
