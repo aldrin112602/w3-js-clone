@@ -108,13 +108,15 @@ const w3 = (() => {
         element.querySelectorAll(childSelector).forEach((childElement) => {
           let content = childElement.innerText.toLowerCase().trim();
           childElement.style.display = content
-            .includes(value)
             .toLowerCase()
             .trim()
+            .includes(value)
             ? "block"
             : "none";
         });
       });
+
+      return this;
   };
 
   return w3;
