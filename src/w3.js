@@ -54,36 +54,53 @@ const w3 = (() => {
       }
     });
   };
-  
-  
+
   // add style
   w3.addStyle = function (selector, property, value) {
-    if(selector && property && value) {
-      if([property, value]
-      .filter(item => typeof item != 'string').length == 0) {
+    if (selector && property && value) {
+      if (
+        [property, value].filter((item) => typeof item != "string").length == 0
+      ) {
         this.$(selector).elements.forEach((element) => {
           element.style[this.toCamelCase(property)] = value;
         });
       }
     }
     return this;
-  }
-  
+  };
+
+  // add class
+  w3.addClass = function (selector, className) {
+    selector &&
+      "string" == typeof className &&
+      this.$(selector).elements.forEach((element) => {
+        className.split(" ").forEach((str) => {
+          element.classList.add(str);
+        });
+      });
+  };
+
   // to camel casing
   w3.toCamelCase = function (str) {
-    if(str && 'string' == typeof str) {
-      let splitStr = str.split('-');
-      let ucWord = splitStr.map(word => {
-        return word.split('').map((letter, i)=>{
-          if(i == 0) {
-            return letter.toUpperCase();
-          }
-          return letter;
-        }).join('');
-      })
+    if (str && "string" == typeof str) {
+      let splitStr = str.split("-");
+      let ucWord = splitStr.map((word) => {
+        return word
+          .split("")
+          .map((letter, i) => {
+            if (i == 0) {
+              return letter.toUpperCase();
+            }
+            return letter;
+          })
+          .join("");
+      });
     }
     return str;
-  }
+  };
 
   return w3;
 })();
+
+
+
