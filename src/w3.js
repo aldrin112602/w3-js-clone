@@ -45,11 +45,20 @@ const w3 = (() => {
   // toggle show
   w3.toggleShow = function (selector) {
     this.$(selector).elements.forEach((element) => {
-      if(element.style.display == 'none') {
-        element.style.display = 'block';
+      if (element.style.display == "none") {
+        element.style.display = "block";
       } else {
         element.style.display = "none";
       }
+    });
+  };
+
+  // add class
+  w3.addClass = function (selector, className) {
+    selector && 'string' == typeof className && this.$(selector).elements.forEach((element) => {
+      className.split(' ').forEach((str) => {
+        element.classList.add(str);
+      })
     });
   };
 

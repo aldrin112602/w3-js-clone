@@ -1,0 +1,12 @@
+{
+  "name": "w3-js-clone",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "push": "git add . && git commit -a -m Updated && git push"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
