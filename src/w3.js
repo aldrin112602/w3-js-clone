@@ -33,6 +33,7 @@ const w3 = (() => {
     this.$(selector).elements.forEach((element) => {
       element.style.display = "none";
     });
+    return this;
   };
 
   // show
@@ -40,6 +41,7 @@ const w3 = (() => {
     this.$(selector).elements.forEach((element) => {
       element.style.display = "block";
     });
+    return this;
   };
 
   // toggle show
@@ -52,16 +54,36 @@ const w3 = (() => {
       }
     });
   };
-
-  // add class
-  w3.addClass = function (selector, className) {
-    selector && 'string' == typeof className && this.$(selector).elements.forEach((element) => {
-      className.split(' ').forEach((str) => {
-        element.classList.add(str);
+  
+  
+  // add style
+  w3.addStyle = function (selector, property, value) {
+    if(selector && property && value) {
+      if([property, value]
+      .filter(item => typeof item != 'string').length == 0) {
+        this.$(selector).elements.forEach((element) => {
+          element.style[this.toCamelCase(property)] = value;
+        });
+      }
+    }
+    return this;
+  }
+  
+  // to camel casing
+  w3.toCamelCase = function (str) {
+    if(str && 'string' == typeof str) {
+      let splitStr = str.split('-');
+      let ucWord = splitStr.map(word => {
+        return word.split('').map((letter, i)=>{
+          if(i == 0) {
+            return letter.toUpperCase();
+          }
+          return letter;
+        }).join('');
       })
-    });
-  };
+    }
+    return str;
+  }
 
-  // Return the w3 object.
   return w3;
 })();
