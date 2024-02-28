@@ -1,11 +1,11 @@
 /**
  * W3.JS 1.0 Feb 16, 2024 by Aldrin Caballero
  *
- * w3.js is owned by w3schools.com,
- * as an aspiring developer,
- * I want to clone or rewrite the codes/functions in my own way of coding.
+ * Description: w3.js is a library owned by w3schools.com.
+ * As an aspiring developer, I've rewritten or cloned certain codes/functions
+ * to understand and adapt them according to my coding style and needs.
+ * This version aims to provide enhanced functionality and usability.
  */
-
 const w3 = (() => {
   ("use strict");
 
@@ -116,7 +116,7 @@ const w3 = (() => {
         });
       });
 
-      return this;
+    return this;
   };
 
   return w3;
