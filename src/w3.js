@@ -28,6 +28,25 @@ const w3 = (() => {
     return this;
   };
 
+  // to camel casing
+  w3.toCamelCase = function (str) {
+    if (str && "string" == typeof str) {
+      let splitStr = str.split("-");
+      let ucWord = splitStr.map((word) => {
+        return word
+          .split("")
+          .map((letter, i) => {
+            if (i == 0) {
+              return letter.toUpperCase();
+            }
+            return letter;
+          })
+          .join("");
+      });
+    }
+    return str;
+  };
+
   // hide
   w3.hide = function (selector) {
     this.$(selector).elements.forEach((element) => {
@@ -80,27 +99,23 @@ const w3 = (() => {
       });
   };
 
-  // to camel casing
-  w3.toCamelCase = function (str) {
-    if (str && "string" == typeof str) {
-      let splitStr = str.split("-");
-      let ucWord = splitStr.map((word) => {
-        return word
-          .split("")
-          .map((letter, i) => {
-            if (i == 0) {
-              return letter.toUpperCase();
-            }
-            return letter;
-          })
-          .join("");
+  // filter html
+  w3.filterHTML = function (selector, childSelector, value) {
+    selector &&
+      childSelector &&
+      value &&
+      this.$(selector).elements.forEach((element) => {
+        element.querySelectorAll(childSelector).forEach((childElement) => {
+          let content = childElement.innerText.toLowerCase().trim();
+          childElement.style.display = content
+            .includes(value)
+            .toLowerCase()
+            .trim()
+            ? "block"
+            : "none";
+        });
       });
-    }
-    return str;
   };
 
   return w3;
 })();
-
-
-
