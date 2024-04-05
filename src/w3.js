@@ -65,12 +65,13 @@ const w3 = (() => {
 
   // toggle show
   w3.toggleShow = function (selector) {
+
     this.$(selector).elements.forEach((element) => {
-      if (element.style.display == "none") {
-        element.style.display = "block";
-      } else {
+      if (element.style.display == "block") {
         element.style.display = "none";
+        return
       }
+      element.style.display = "block";
     });
   };
 
@@ -117,6 +118,30 @@ const w3 = (() => {
       });
 
     return this;
+  };
+
+
+
+  // slideShow
+  w3.slideshow = function (selector, interval) {
+    let elements = this.$(selector).elements;
+    elements.forEach((e, i) => {
+      if (i == 0) e.style.display = 'block'
+      else e.style.display = 'none'
+    })
+    if (selector && elements.length > 0) {
+      let i = 1;
+      setInterval(() => {
+        elements.forEach((e, _) => {
+          if (i == _) e.style.display = 'block'
+          else e.style.display = 'none'
+        })
+        i++;
+        if (i >= elements.length) {
+          i = 0;
+        }
+      }, interval);
+    }
   };
 
 
