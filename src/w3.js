@@ -14,18 +14,17 @@ const w3 = (() => {
     d = document,
     w = window;
 
-  // elements array
-  w3.elements = [];
 
   // element selector
   w3.$ = function (selector) {
+    let elements = [];
     if (typeof selector === "string") {
       // and push elements into this.elements array.
-      this.elements.push(...d.querySelectorAll(selector));
+      elements = d.querySelectorAll(selector);
     } else if (selector) {
-      this.elements.push(selector);
+      elements.push(selector);
     }
-    return this;
+    return elements;
   };
 
   // to camel casing
@@ -49,7 +48,7 @@ const w3 = (() => {
 
   // hide
   w3.hide = function (selector) {
-    this.$(selector).elements.forEach((element) => {
+    this.$(selector).forEach((element) => {
       element.style.display = "none";
     });
     return this;
@@ -57,7 +56,7 @@ const w3 = (() => {
 
   // show
   w3.show = function (selector) {
-    this.$(selector).elements.forEach((element) => {
+    this.$(selector).forEach((element) => {
       element.style.display = "block";
     });
     return this;
@@ -66,7 +65,7 @@ const w3 = (() => {
   // toggle show
   w3.toggleShow = function (selector) {
 
-    this.$(selector).elements.forEach((element) => {
+    this.$(selector).forEach((element) => {
       if (element.style.display == "block") {
         element.style.display = "none";
         return
@@ -81,7 +80,7 @@ const w3 = (() => {
       if (
         [property, value].filter((item) => typeof item != "string").length == 0
       ) {
-        this.$(selector).elements.forEach((element) => {
+        this.$(selector).forEach((element) => {
           element.style[this.toCamelCase(property)] = value;
         });
       }
@@ -93,7 +92,7 @@ const w3 = (() => {
   w3.addClass = function (selector, className) {
     selector &&
       "string" == typeof className &&
-      this.$(selector).elements.forEach((element) => {
+      this.$(selector).forEach((element) => {
         className.split(" ").forEach((str) => {
           element.classList.add(str);
         });
@@ -105,7 +104,7 @@ const w3 = (() => {
     selector &&
       childSelector &&
       value &&
-      this.$(selector).elements.forEach((element) => {
+      this.$(selector).forEach((element) => {
         element.querySelectorAll(childSelector).forEach((childElement) => {
           let content = childElement.innerText.toLowerCase().trim();
           childElement.style.display = content
@@ -124,7 +123,7 @@ const w3 = (() => {
 
   // slideShow
   w3.slideshow = function (selector, interval) {
-    let elements = this.$(selector).elements;
+    let elements = this.$(selector);
     elements.forEach((e, i) => {
       if (i == 0) e.style.display = 'block'
       else e.style.display = 'none'
@@ -144,16 +143,19 @@ const w3 = (() => {
     }
   };
 
-  w3.includeHTML = function() {
-    let elements = this.$('*').elements;
-    elements.forEach(element => {
+  w3.includeHTML = function () {
+    this.$('body *').forEach(element => {
       let w3IncludeURL = element.getAttribute('w3-include-html');
-      if(w3IncludeURL && 'string' === typeof w3IncludeURL && w3IncludeURL.includes('.')) {
+      if (w3IncludeURL && 'string' === typeof w3IncludeURL && w3IncludeURL.includes('.')) {
         fetch(w3IncludeURL)
-        .then(res => res.text())
-        .then(html => {
-           element.innerHTML = html;
-         })
+          .then(res => {
+            if (res.status == 200) return res.text()
+            else throw new Error(res.statusText)
+          })
+          .then(html => {
+            element.innerHTML = html;
+          })
+          .catch(err => console.log(err))
       }
     })
     return this;
@@ -168,10 +170,6 @@ const w3 = (() => {
       enumerable: false,
     },
     toCamelCase: {
-      writable: false,
-      enumerable: false,
-    },
-    elements: {
       writable: false,
       enumerable: false,
     }
