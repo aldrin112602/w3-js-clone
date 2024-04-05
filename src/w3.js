@@ -119,5 +119,24 @@ const w3 = (() => {
     return this;
   };
 
-  return w3;
+
+  // return w3;
+
+  const W3 = Object.defineProperties(w3, {
+    $: {
+      writable: false,
+      enumerable: false,
+    },
+    toCamelCase: {
+      writable: false,
+      enumerable: false,
+    },
+    elements: {
+      writable: false,
+      enumerable: false,
+    }
+  });
+
+
+  return Object.seal(Object.freeze(W3));
 })();
