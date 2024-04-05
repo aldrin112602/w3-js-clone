@@ -26,7 +26,7 @@ fs.readFile('src/w3.js', 'utf8', function (err, data) {
             });
 
             resp.on('end', function() {
-                fs.writeFile('src/w3.min.js', responseData, function(err) {
+                fs.writeFile('src/w3.min.js', `/***\n* W3.JS minified version - ${new Date()}\n* Author: Aldrin Caballero \n*\n*\/ ${responseData}`, function(err) {
                     if (err) throw err;
                     console.log('File w3.min.js has been saved successfully.');
                 });
