@@ -1,10 +1,5 @@
 /**
  * W3.JS 1.0 Feb 16, 2024 by Aldrin Caballero
- *
- * Description: w3.js is a library owned by w3schools.com.
- * As an aspiring developer, I've rewritten or cloned certain codes/functions
- * to understand and adapt them according to my coding style and needs.
- * This version aims to provide enhanced functionality and usability.
  */
 const w3 = (() => {
   ("use strict");
