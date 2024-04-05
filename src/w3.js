@@ -144,6 +144,21 @@ const w3 = (() => {
     }
   };
 
+  w3.includeHTML = function() {
+    let elements = this.$('*').elements;
+    elements.forEach(element => {
+      let w3IncludeURL = element.getAttribute('w3-include-html');
+      if(w3IncludeURL && 'string' === typeof w3IncludeURL && w3IncludeURL.includes('.')) {
+        fetch(w3IncludeURL)
+        .then(res => res.text())
+        .then(html => {
+           element.innerHTML = html;
+         })
+      }
+    })
+    return this;
+  }
+
 
   // return w3;
 
