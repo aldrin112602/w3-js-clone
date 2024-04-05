@@ -143,7 +143,7 @@ const w3 = (() => {
     }
   };
 
-  w3.includeHTML = function () {
+  w3.includeHTML = function (callback) {
     this.$('body *').forEach(element => {
       let w3IncludeURL = element.getAttribute('w3-include-html');
       if (w3IncludeURL && 'string' === typeof w3IncludeURL && w3IncludeURL.includes('.')) {
@@ -156,6 +156,7 @@ const w3 = (() => {
             element.innerHTML = html;
           })
           .catch(err => console.log(err))
+          .finally(() => (callback  && callback instanceof Function) && callback())
       }
     })
     return this;
