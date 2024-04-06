@@ -172,6 +172,7 @@ const w3 = (() => {
         [...childs].filter(child => child.getAttribute('w3-repeat') != null)
         .forEach(child => {
           var clonedElement = child.cloneNode(true);
+          var parentNode = child.parentNode;
           child.remove();
           for (let key in obj) {
             if(obj[key] instanceof Array) {
@@ -180,14 +181,29 @@ const w3 = (() => {
                 for (let _key in _obj) {
                   let regex = new RegExp(`{{\\s*${_key}\\s*}}`, 'g');
                   copyClone.innerHTML = copyClone.innerHTML.replace(regex, match => _obj[_key]);
-                  parent.appendChild(copyClone)
+                  
                 }
+                parentNode.appendChild(copyClone)
               })
             }
           }
         })
       }
     }
+  }
+
+  w3.getHttpObject = function(path, callback) {
+    fetch(path)
+     .then(res => {
+        if (res.status == 200) return res.json()
+        else throw new Error(res.statusText)
+      })
+     .then(json => {
+        if(callback && callback instanceof Function) {
+          callback(json)
+        }
+      })
+     .catch(err => console.log(err))
   }
 
 
