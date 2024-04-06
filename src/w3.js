@@ -10,6 +10,40 @@ const w3 = (() => {
     w = window;
 
 
+  function findAllChildrenWithAttribute(parent, attributeName, results = []) {
+    if (!parent || !parent.children) {
+      return results;
+    }
+    for (let child of parent.children) {
+      if (child.getAttribute(attributeName)) {
+        results.push(child);
+      }
+      findAllChildrenWithAttribute(child, attributeName, results);
+    }
+    return results;
+  }
+
+  function appendRow(row, obj) {
+    let clonedRow = row.cloneNode(true);
+    let parentNode = row.parentNode;
+    row.remove();
+
+    for (let key in obj) {
+      if (obj[key] instanceof Array) {
+        obj[key].forEach(_obj => {
+          let copyClone = clonedRow.cloneNode(true);
+          copyClone.removeAttribute('w3-repeat');
+          for (let _key in _obj) {
+            let regex = new RegExp(`{{\\s*${_key}\\s*}}`, 'g');
+            copyClone.innerHTML = copyClone.innerHTML.replace(regex, match => _obj[_key]);
+          }
+          parentNode.appendChild(copyClone);
+        });
+      }
+    }
+  }
+
+
   // element selector
   w3.$ = function (selector) {
     let elements = [];
@@ -159,51 +193,61 @@ const w3 = (() => {
 
   w3.displayObject = function (id, obj) {
     let parent = document.getElementById(id);
-
     if (parent && obj && obj instanceof Object) {
-      let childs = parent.children;
+      let childs = [...parent.children];
+
       if (childs.length === 0) {
         for (let key in obj) {
-          
+
           let regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
           parent.innerHTML = parent.innerHTML.replace(regex, match => obj[key]);
         }
       } else {
         [...childs].filter(child => child.getAttribute('w3-repeat') != null)
-        .forEach(child => {
-          var clonedElement = child.cloneNode(true);
-          var parentNode = child.parentNode;
-          child.remove();
-          for (let key in obj) {
-            if(obj[key] instanceof Array) {
-              obj[key].forEach(_obj => {
-                let copyClone = clonedElement.cloneNode(true)
-                for (let _key in _obj) {
-                  let regex = new RegExp(`{{\\s*${_key}\\s*}}`, 'g');
-                  copyClone.innerHTML = copyClone.innerHTML.replace(regex, match => _obj[_key]);
-                  
-                }
-                parentNode.appendChild(copyClone)
-              })
+          .forEach(child => {
+            var clonedElement = child.cloneNode(true);
+            var parentNode = child.parentNode;
+            child.remove();
+            for (let key in obj) {
+              if (obj[key] instanceof Array) {
+                obj[key].forEach(_obj => {
+                  let copyClone = clonedElement.cloneNode(true)
+                  for (let _key in _obj) {
+                    let regex = new RegExp(`{{\\s*${_key}\\s*}}`, 'g');
+                    copyClone.innerHTML = copyClone.innerHTML.replace(regex, match => _obj[_key]);
+
+                  }
+                  parentNode.appendChild(copyClone)
+                })
+              }
             }
-          }
+          });
+
+        [...childs].filter(child => {
+          return findAllChildrenWithAttribute(child, 'w3-repeat').length > 0 || child.getAttribute('w3-repeat') != null;
         })
+          .forEach(child => {
+            let rowsWithW3Repeat = findAllChildrenWithAttribute(child, 'w3-repeat');
+            rowsWithW3Repeat.forEach(row => {
+              appendRow(row, obj)
+            });
+          });
       }
     }
   }
 
-  w3.getHttpObject = function(path, callback) {
+  w3.getHttpObject = function (path, callback) {
     fetch(path)
-     .then(res => {
+      .then(res => {
         if (res.status == 200) return res.json()
         else throw new Error(res.statusText)
       })
-     .then(json => {
-        if(callback && callback instanceof Function) {
+      .then(json => {
+        if (callback && callback instanceof Function) {
           callback(json)
         }
       })
-     .catch(err => console.log(err))
+      .catch(err => console.log(err))
   }
 
 
