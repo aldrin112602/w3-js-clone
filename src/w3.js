@@ -164,11 +164,28 @@ const w3 = (() => {
       let childs = parent.children;
       if (childs.length === 0) {
         for (let key in obj) {
+          
           let regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
           parent.innerHTML = parent.innerHTML.replace(regex, match => obj[key]);
         }
       } else {
-        // get children with w3-repeat attribute
+        [...childs].filter(child => child.getAttribute('w3-repeat') != null)
+        .forEach(child => {
+          var clonedElement = child.cloneNode(true);
+          child.remove();
+          for (let key in obj) {
+            if(obj[key] instanceof Array) {
+              obj[key].forEach(_obj => {
+                let copyClone = clonedElement.cloneNode(true)
+                for (let _key in _obj) {
+                  let regex = new RegExp(`{{\\s*${_key}\\s*}}`, 'g');
+                  copyClone.innerHTML = copyClone.innerHTML.replace(regex, match => _obj[_key]);
+                  parent.appendChild(copyClone)
+                }
+              })
+            }
+          }
+        })
       }
     }
   }
