@@ -168,7 +168,7 @@ const w3 = (() => {
           parent.innerHTML = parent.innerHTML.replace(regex, match => obj[key]);
         }
       } else {
-        
+        // get children with w3-repeat attribute
       }
     }
   }
