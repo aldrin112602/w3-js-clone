@@ -151,14 +151,28 @@ const w3 = (() => {
             element.innerHTML = html;
           })
           .catch(err => console.log(err))
-          .finally(() => (callback  && callback instanceof Function) && callback())
+          .finally(() => (callback && callback instanceof Function) && callback())
       }
     })
     return this;
   }
 
+  w3.displayObject = function (id, obj) {
+    let parent = document.getElementById(id);
 
-  // return w3;
+    if (parent && obj && obj instanceof Object) {
+      let childs = parent.children;
+      if (childs.length === 0) {
+        for (let key in obj) {
+          let regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
+          parent.innerHTML = parent.innerHTML.replace(regex, match => obj[key]);
+        }
+      } else {
+        
+      }
+    }
+  }
+
 
   const W3 = Object.defineProperties(w3, {
     $: {
