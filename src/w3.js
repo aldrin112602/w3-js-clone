@@ -212,13 +212,18 @@ const w3 = (() => {
               if (obj[key] instanceof Array) {
                 obj[key].forEach(_obj => {
                   let copyClone = clonedElement.cloneNode(true)
-                  for (let _key in _obj) {
-                    let regex = new RegExp(`{{\\s*${_key}\\s*}}`, 'g');
-                    copyClone.innerHTML = copyClone.innerHTML.replace(regex, match => _obj[_key]);
+                  if (_obj instanceof Object) {
+                    for (let _key in _obj) {
+                      let regex = new RegExp(`{{\\s*${_key}\\s*}}`, 'g');
+                      copyClone.innerHTML = copyClone.innerHTML.replace(regex, match => _obj[_key]);
 
+                    }
+                  } else {
+                    let regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
+                    copyClone.innerHTML = copyClone.innerHTML.replace(regex, match => obj[key]);
                   }
                   parentNode.appendChild(copyClone)
-                })
+                });
               }
             }
           });
