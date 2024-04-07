@@ -1,7 +1,7 @@
 # w3-js-clone
 
 - This project is inspired by and based on the W3.js library, originally developed by W3Schools. 
-- The code in this repository represents a custom implementation of the W3.js functionality, adapted and written in our own style to suit specific requirements. 
+- The code in this repository represents a custom implementation of the W3.js functionality, adapted and written in my own style to suit specific requirements. 
 
 - I express my gratitude to W3Schools for their work on developing the original W3.js library, which has been instrumental in the creation of this project.
 
